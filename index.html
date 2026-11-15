@@ -1,56 +1,429 @@
-<!doctype html>
+
+
+<!DOCTYPE html>
+
 <html lang="ja">
+
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>REN STOCK AI v1.0</title>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>REN STOCK AI v1.1</title>
+
 <style>
-:root{color-scheme:dark;--bg:#0b1020;--panel:#141c30;--panel2:#1b2740;--line:#293650;--text:#edf3ff;--muted:#94a3bd;--green:#36d399;--red:#ff7185;--blue:#78a9ff;--yellow:#f5c86a}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(145deg,#0b1020,#101a2c);color:var(--text);font:15px/1.5 system-ui,-apple-system,"Noto Sans JP",sans-serif}main{max-width:1120px;margin:auto;padding:24px}header{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}.brand{font-size:22px;font-weight:800;letter-spacing:.4px}.sub{color:var(--muted);font-size:12px}.tag{border:1px solid #326b59;color:var(--green);padding:5px 10px;border-radius:20px;font-size:12px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.card{background:rgba(20,28,48,.94);border:1px solid var(--line);border-radius:15px;padding:16px}.metric small,.muted{color:var(--muted)}.metric strong{display:block;font-size:25px;margin-top:6px}.green{color:var(--green)}.red{color:var(--red)}.yellow{color:var(--yellow)}h2{font-size:16px;margin:0 0 14px}.section{margin-top:16px}.toolbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}button{background:#29436c;color:white;border:0;border-radius:9px;padding:10px 13px;font-weight:650;cursor:pointer}button.secondary{background:#263149}button.good{background:#167b5a}button:active{transform:translateY(1px)}table{width:100%;border-collapse:collapse;font-size:13px}th,td{text-align:left;padding:11px 8px;border-bottom:1px solid var(--line)}th{color:var(--muted);font-weight:500}.signal{display:inline-block;padding:4px 8px;border-radius:20px;font-size:11px;background:#263149}.signal.buy{background:#123e35;color:var(--green)}.signal.wait{background:#45391f;color:var(--yellow)}.signal.sell{background:#492634;color:var(--red)}.two{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.bar{height:9px;border-radius:8px;background:#263149;overflow:hidden;margin:8px 0}.bar span{display:block;height:100%;background:linear-gradient(90deg,#4d8fff,#36d399)}.notice{background:#332b1c;border:1px solid #66532a;color:#f4d99a;padding:12px;border-radius:11px;font-size:12px;margin-top:14px}.list{display:grid;gap:10px}.row{display:flex;justify-content:space-between;gap:12px}.pill{color:var(--muted);font-size:12px}.foot{color:var(--muted);font-size:11px;margin-top:18px}.empty{color:var(--muted);padding:18px;text-align:center}.formrow{display:flex;gap:8px;flex-wrap:wrap}input{background:#0d1527;color:var(--text);border:1px solid var(--line);padding:10px;border-radius:8px;min-width:0;width:100%}.field{flex:1;min-width:120px}.field label{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}@media(max-width:760px){main{padding:15px}.grid{grid-template-columns:repeat(2,1fr)}.two{grid-template-columns:1fr}table{font-size:12px}th,td{padding:9px 5px}.brand{font-size:19px}}
+
+:root{color-scheme:dark;--bg:#0b1020;--panel:#151e30;--line:#29364d;--blue:#548cff;--green:#20d69a;--red:#ff6478}
+
+*{box-sizing:border-box}
+
+body{margin:0;background:var(--bg);color:#edf2ff;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+
+main{max-width:1100px;margin:auto;padding:20px}
+
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+
+.brand{font-size:23px;font-weight:800;letter-spacing:1px}
+
+.brand span{color:var(--blue)}
+
+small,.muted{color:#91a1ba}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:17px;margin-bottom:15px}
+
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+
+.metric{font-size:23px;font-weight:750;margin-top:9px}
+
+h2{font-size:17px;margin:0 0 15px}
+
+button,select,input{background:#202d44;color:white;border:1px solid #394b68;border-radius:9px;padding:12px;font-size:14px}
+
+button{cursor:pointer;background:#315fbd;border:0;font-weight:700}
+
+button:disabled{opacity:.4}
+
+.toolbar{display:flex;gap:10px;flex-wrap:wrap}
+
+.toolbar button{flex:1}
+
+table{width:100%;border-collapse:collapse;min-width:540px}
+
+th,td{text-align:left;padding:13px 9px;border-bottom:1px solid var(--line);font-size:13px}
+
+th{color:#91a1ba}
+
+.green{color:var(--green)}
+
+.red{color:var(--red)}
+
+input,select{width:100%;margin:7px 0}
+
+.sub{font-size:12px;color:#91a1ba;margin-top:9px}
+
+.status{font-size:12px;color:#91a1ba}
+
+#message{margin-top:10px;font-size:13px}
+
+@media(max-width:650px){main{padding:13px}.grid{grid-template-columns:repeat(2,1fr)}.metric{font-size:19px}.brand{font-size:19px}}
+
 </style>
+
 </head>
-<body><main>
-<header><div><div class="brand">◈ REN STOCK AI <span class="sub">v1.0 / PAPER TRADING</span></div><div class="sub">Swing Trading · AI候補スコア · 仮想運用</div></div><span class="tag">● デモモード</span></header>
+
+<body>
+
+<main>
+
+<header>
+
+<div class="brand">◆ REN STOCK <span>AI</span></div>
+
+<div class="status" id="status">接続準備中</div>
+
+</header>
+
 <section class="grid">
- <div class="card metric"><small>運用開始資金</small><strong>¥100,000</strong></div>
- <div class="card metric"><small>仮想現金残高</small><strong id="cash">¥100,000</strong></div>
- <div class="card metric"><small>仮想評価額</small><strong id="value">¥0</strong></div>
- <div class="card metric"><small>仮想損益</small><strong id="pnl">¥0</strong></div>
+
+<div class="card"><small>運用開始資金</small><div class="metric">$10,000</div></div>
+
+<div class="card"><small>仮想現金残高</small><div class="metric" id="cash">$10,000</div></div>
+
+<div class="card"><small>仮想評価額</small><div class="metric" id="value">$0</div></div>
+
+<div class="card"><small>仮想損益</small><div class="metric" id="pnl">$0</div></div>
+
 </section>
-<section class="section card"><div class="row"><h2>AI銘柄スキャン候補</h2><span class="pill">※サンプルデータ・実際の相場ではありません</span></div>
-<div class="toolbar"><button id="scan">候補を再スキャン</button><button class="secondary" id="reset">仮想口座をリセット</button></div>
-<div style="overflow-x:auto"><table><thead><tr><th>銘柄</th><th>参考価格</th><th>スコア</th><th>判定</th><th>アクション</th></tr></thead><tbody id="candidates"></tbody></table></div></section>
-<section class="section two">
- <div class="card"><h2>仮想ポートフォリオ</h2><div id="holdings" class="list"><div class="empty">保有銘柄はありません。候補から仮想購入できます。</div></div></div>
- <div class="card"><h2>運用ルール</h2><div class="list">
-  <div class="row"><span class="muted">投資上限</span><b>¥100,000</b></div><div class="row"><span class="muted">1銘柄あたり上限</span><b>¥30,000</b></div><div class="row"><span class="muted">仮想損切り目安</span><b class="red">−5%</b></div><div class="row"><span class="muted">仮想利確目安</span><b class="green">＋10%</b></div><div class="row"><span class="muted">売買スタイル</span><b>数日〜数週間</b></div>
-  <div class="sub">スコアは説明用の固定サンプル。現時点ではAI推論・リアルタイム株価・証券口座への発注には接続していません。</div>
- </div></div>
+
+<section class="card">
+
+<h2>市場データ</h2>
+
+<div class="toolbar">
+
+<button id="refresh">株価を更新</button>
+
+</div>
+
+<div id="message">株価を取得してください。</div>
+
+<div style="overflow-x:auto;margin-top:12px">
+
+<table>
+
+<thead><tr><th>銘柄</th><th>株価</th><th>前日比</th><th>騰落率</th></tr></thead>
+
+<tbody id="stocks"></tbody>
+
+</table>
+
+</div>
+
+<div class="sub">Finnhub API / USD表示 / データ取得時点の株価</div>
+
 </section>
-<section class="section card"><h2>売買履歴</h2><div id="history" class="empty">まだ取引履歴はありません。</div></section>
-<div class="notice">重要：この画面は開発初期の操作確認用プロトタイプです。表示される価格・スコア・シグナルは架空のサンプルで、投資判断に使用しないでください。実運用前に、信頼できる市場データ、手数料・為替、バックテスト、リスク制御を実装します。PayPay証券への自動発注機能は未実装です。</div>
-<div class="foot">REN STOCK AI · Local demo · データはこのブラウザ画面内の一時状態のみ</div>
+
+<section class="card">
+
+<h2>仮想ポートフォリオ</h2>
+
+<div style="overflow-x:auto">
+
+<table>
+
+<thead><tr><th>銘柄</th><th>保有数</th><th>現在価格</th><th>評価額</th></tr></thead>
+
+<tbody id="holdings"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<section class="card">
+
+<h2>仮想売買</h2>
+
+<label>銘柄</label>
+
+<select id="symbol">
+
+<option value="NVDA">NVIDIA (NVDA)</option>
+
+<option value="MSFT">Microsoft (MSFT)</option>
+
+<option value="AAPL">Apple (AAPL)</option>
+
+<option value="MU">Micron (MU)</option>
+
+<option value="PLTR">Palantir (PLTR)</option>
+
+</select>
+
+<label>売買株数</label>
+
+<input id="quantity" type="number" min="0.001" step="0.001" value="1">
+
+<div class="toolbar">
+
+<button id="buy">仮想購入</button>
+
+<button id="sell" style="background:#a83d55">仮想売却</button>
+
+</div>
+
+<div id="tradeMessage" class="sub"></div>
+
+</section>
+
+<section class="card">
+
+<h2>売買履歴</h2>
+
+<div style="overflow-x:auto">
+
+<table>
+
+<thead><tr><th>日時</th><th>銘柄</th><th>売買</th><th>株数</th><th>価格</th></tr></thead>
+
+<tbody id="history"></tbody>
+
+</table>
+
+</div>
+
+</section>
+
+<div class="sub">REN STOCK AI v1.1 / 仮想売買専用 / 投資判断を保証するものではありません。</div>
+
 </main>
+
 <script>
-const initial=[
- {ticker:'NVDA',name:'NVIDIA',price:142.50,score:86,signal:'買い候補'},
- {ticker:'MSFT',name:'Microsoft',price:510.20,score:78,signal:'様子見'},
- {ticker:'AAPL',name:'Apple',price:267.40,score:72,signal:'様子見'},
- {ticker:'MU',name:'Micron',price:188.30,score:64,signal:'様子見'},
- {ticker:'PLTR',name:'Palantir',price:172.10,score:48,signal:'見送り'}
-];
-let cash=100000, holdings=[], history=[]; let candidates=[...initial];
-const yen=n=>'¥'+Math.round(n).toLocaleString('ja-JP');
+
+const API="https://ren-stock-api.sakugann222555.workers.dev";
+
+const names={
+
+ NVDA:"NVIDIA",
+
+ MSFT:"Microsoft",
+
+ AAPL:"Apple",
+
+ MU:"Micron",
+
+ PLTR:"Palantir"
+
+};
+
+let prices={};
+
+let cash=10000;
+
+let holdings={};
+
+let history=[];
+
+const $=id=>document.getElementById(id);
+
+const money=n=>"$"+Number(n||0).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+
 function render(){
- document.getElementById('cash').textContent=yen(cash);
- const value=holdings.reduce((s,h)=>s+h.qty*h.price,0), cost=holdings.reduce((s,h)=>s+h.qty*h.buy,0), pnl=value-cost;
- document.getElementById('value').textContent=yen(value);
- const p=document.getElementById('pnl');p.textContent=(pnl>=0?'+':'')+yen(pnl);p.className=pnl>=0?'green':'red';
- document.getElementById('candidates').innerHTML=candidates.map(c=>`<tr><td><b>${c.ticker}</b><br><span class="muted">${c.name}</span></td><td>$${c.price.toFixed(2)}</td><td><b>${c.score}</b>/100<div class="bar"><span style="width:${c.score}%"></span></div></td><td><span class="signal ${c.signal==='買い候補'?'buy':c.signal==='見送り'?'sell':'wait'}">${c.signal}</span></td><td><button class="good" onclick="buy('${c.ticker}')" ${c.signal!=='買い候補'?'disabled style="opacity:.45"':''}>仮想購入</button></td></tr>`).join('');
- document.getElementById('holdings').innerHTML=holdings.length?holdings.map(h=>`<div class="card" style="padding:11px"><div class="row"><b>${h.ticker}</b><b>${yen(h.qty*h.price)}</b></div><div class="row sub"><span>${h.qty.toFixed(4)}株 · 取得 $${h.buy.toFixed(2)}</span><span>現在 $${h.price.toFixed(2)}</span></div><div class="row"><span class="pill">評価損益</span><b class="${h.price>=h.buy?'green':'red'}">${(h.price>=h.buy?'+':'')+yen((h.price-h.buy)*h.qty)}</b></div><button class="secondary" style="margin-top:8px" onclick="sell('${h.ticker}')">仮想売却</button></div>`).join(''):'<div class="empty">保有銘柄はありません。候補から仮想購入できます。</div>';
- document.getElementById('history').innerHTML=history.length?'<table><thead><tr><th>取引</th><th>銘柄</th><th>数量</th><th>金額</th></tr></thead><tbody>'+history.map(x=>`<tr><td>${x.side}</td><td>${x.ticker}</td><td>${x.qty.toFixed(4)}</td><td>${yen(x.amount)}</td></tr>`).join('')+'</tbody></table>':'まだ取引履歴はありません。';
+
+ const symbols=Object.keys(names);
+
+ $("stocks").innerHTML=symbols.map(s=>{
+
+  const p=prices[s];
+
+  if(!p)return `<tr><td>${names[s]}</td><td colspan="3">取得待ち</td></tr>`;
+
+  return `<tr>
+
+  <td><b>${names[s]}</b><br><small>${s}</small></td>
+
+  <td>${money(p.price)}</td>
+
+  <td class="${p.change>=0?"green":"red"}">${p.change>=0?"+":""}${money(p.change)}</td>
+
+  <td class="${p.changePercent>=0?"green":"red"}">${p.changePercent>=0?"+":""}${Number(p.changePercent).toFixed(2)}%</td>
+
+  </tr>`;
+
+ }).join("");
+
+ let total=0;
+
+ $("holdings").innerHTML=symbols.map(s=>{
+
+  const h=holdings[s];
+
+  if(!h||h.qty<=0)return "";
+
+  const price=prices[s]?.price||h.avg;
+
+  const v=h.qty*price;
+
+  total+=v;
+
+  return `<tr><td>${names[s]}</td><td>${h.qty.toFixed(3)}</td><td>${money(price)}</td><td>${money(v)}</td></tr>`;
+
+ }).join("")||'<tr><td colspan="4">保有銘柄はありません</td></tr>';
+
+ $("cash").textContent=money(cash);
+
+ $("value").textContent=money(total);
+
+ const profit=total+cash-10000;
+
+ $("pnl").textContent=(profit>=0?"+":"")+money(profit);
+
+ $("pnl").className="metric "+(profit>=0?"green":"red");
+
+ $("history").innerHTML=history.slice().reverse().map(h=>
+
+ `<tr><td>${h.date}</td><td>${h.symbol}</td><td class="${h.type==="購入"?"green":"red"}">${h.type}</td><td>${h.qty}</td><td>${money(h.price)}</td></tr>`
+
+ ).join("")||'<tr><td colspan="5">取引履歴はありません</td></tr>';
+
 }
-function buy(t){const c=candidates.find(x=>x.ticker===t);if(!c)return;const amount=Math.min(20000,cash);if(amount<1000){alert('仮想現金が不足しています');return;}const qty=amount/c.price;cash-=amount;const h=holdings.find(x=>x.ticker===t);if(h){const total=h.qty+qty;h.buy=(h.buy*h.qty+c.price*qty)/total;h.qty=total;h.price=c.price;}else holdings.push({ticker:t,qty,buy:c.price,price:c.price});history.unshift({side:'仮想買付',ticker:t,qty,amount});render();}
-function sell(t){const i=holdings.findIndex(x=>x.ticker===t);if(i<0)return;const h=holdings[i],amount=h.qty*h.price;cash+=amount;history.unshift({side:'仮想売却',ticker:t,qty:h.qty,amount});holdings.splice(i,1);render();}
-document.getElementById('scan').onclick=()=>{candidates=candidates.map(c=>({...c,score:Math.max(35,Math.min(95,c.score+Math.round((Math.random()-.5)*12)))})).map(c=>({...c,signal:c.score>=82?'買い候補':c.score<55?'見送り':'様子見'})).sort((a,b)=>b.score-a.score);render();};
-document.getElementById('reset').onclick=()=>{if(!confirm('仮想口座を初期状態に戻しますか？'))return;cash=100000;holdings=[];history=[];candidates=[...initial];render();};render();
-</script></body></html>
+
+async function refresh(){
+
+ $("refresh").disabled=true;
+
+ $("status").textContent="株価取得中...";
+
+ $("message").textContent="APIから株価を取得しています...";
+
+ let success=0;
+
+ for(const s of Object.keys(names)){
+
+  try{
+
+   const response=await fetch(`${API}/quote?symbol=${encodeURIComponent(s)}`);
+
+   const data=await response.json();
+
+   if(!response.ok||!Number.isFinite(Number(data.price))||Number(data.price)<=0){
+
+    throw new Error(data.error||"株価取得エラー");
+
+   }
+
+   prices[s]=data;
+
+   success++;
+
+  }catch(e){
+
+   console.error(s,e);
+
+  }
+
+ }
+
+ render();
+
+ $("status").textContent=success===5?"API接続正常":`取得成功 ${success}/5`;
+
+ $("message").textContent=success===5?"全銘柄の株価を取得しました。":`${success}/5銘柄取得。失敗した銘柄は再更新してください。`;
+
+ $("refresh").disabled=false;
+
+}
+
+function trade(type){
+
+ const s=$("symbol").value;
+
+ const qty=Number($("quantity").value);
+
+ const price=prices[s]?.price;
+
+ if(!Number.isFinite(qty)||qty<=0){
+
+  $("tradeMessage").textContent="株数を正しく入力してください。";
+
+  return;
+
+ }
+
+ if(!price){
+
+  $("tradeMessage").textContent="先に株価を取得してください。";
+
+  return;
+
+ }
+
+ const amount=qty*price;
+
+ const h=holdings[s]||{qty:0,avg:0};
+
+ if(type==="購入"){
+
+  if(amount>cash){
+
+   $("tradeMessage").textContent="仮想現金が不足しています。";
+
+   return;
+
+  }
+
+  h.avg=(h.avg*h.qty+amount)/(h.qty+qty);
+
+  h.qty+=qty;
+
+  cash-=amount;
+
+ }else{
+
+  if(qty>h.qty){
+
+   $("tradeMessage").textContent="保有株数が不足しています。";
+
+   return;
+
+  }
+
+  h.qty-=qty;
+
+  cash+=amount;
+
+ }
+
+ holdings[s]=h;
+
+ history.push({
+
+  date:new Date().toLocaleString("ja-JP"),
+
+  symbol:s,type,qty,price
+
+ });
+
+ $("tradeMessage").textContent=`${names[s]}を${qty}株${type}しました。`;
+
+ render();
+
+}
+
+$("refresh").addEventListener("click",refresh);
+
+$("buy").addEventListener("click",()=>trade("購入"));
+
+$("sell").addEventListener("click",()=>trade("売却"));
+
+render();
+
+refresh();
+
+</script>
+
+</body>
+
+</html>
